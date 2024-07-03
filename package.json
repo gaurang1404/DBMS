@@ -1,0 +1,17 @@
+{
+  "name": "dbmsproject",
+  "version": "1.0.0",
+  "description": "Basic APIs using MySQL",
+  "main": "server.js",
+  "scripts": {},
+  "type": "module",
+  "git": "https://github.com/gaurang1404/DBMS.git",
+  "author": "GG",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2",
+    "mysql": "^2.18.1",
+    "mysql2": "^3.10.2",
+    "pg": "^8.12.0"
+  }
+}
