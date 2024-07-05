@@ -1,21 +1,31 @@
 import express from 'express';
+import session from 'express-session';
+import path from 'path';
+import ejs from 'ejs';
+
 import db from './src/connecrions/db.js';
 
 const server = express();
 
-server.get('/', (req, res) => {
-    console.log("log");
-    const sql = "SELECT * FROM patient";
-    db.query(sql, (err, data) => {
-        if(err){
-            console.log(err);
-            return res.json("Something went wrong");
-        }else{
-            console.log(data);
-            return res.status(200).send(data);    
-        }
+server.use(
+    session({
+      secret: "SecretKey",
+      resave: false,
+      saveUninitialized: true,
+      cookie: { secure: false },
     })
-});
+);
+
+server.use(express.static("public"));
+server.set("view engine", ejs);
+server.set("views", path.join(path.resolve(), "src", "views"));
+
+server.use(express.json());
+
+server.get('/', (req, res) => {
+    res.render('index.ejs', {user: null});
+})
+
 
 server.listen(3000, () => {
     console.log("Server is running");

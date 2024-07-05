@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- CSS styling -->
+  <link rel="stylesheet" href="/css/style.css" />
+
+  <!-- Font awesome -->
+  <script src="https://kit.fontawesome.com/34815d3281.js" crossorigin="anonymous"></script>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@100;300;600&family=Roboto:wght@500;900&display=swap"
+    rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Teko:wght@700&display=swap" rel="stylesheet" />
+
+  <link rel="icon" href="/images/heartbeatFav.png" type="image/x-icon">
+  <!-- <link rel="shortcut icon" href="path/to/favicon.ico" type="image/x-icon"> -->
+
+  <!-- Title -->
+  <title>Life Saver Hospital</title>
+</head>
+
+<body>
+  <nav>
+    <div class="navigation">
+      <div class="navigation-helpline">
+        <div class="navigation-helpline-helpline">
+          <i class="fa-solid fa-phone" style="color: var(--blue)"></i>
+          <span style="
+                font-family: 'Barlow Condensed', sans-serif;
+                font-weight: 300;
+              ">24 hours emergency & ambulance Service: +321 789 01 2345</span>
+        </div>
+        <div class="navigation-helpline-socials">
+          <a href="https://facebook.com" target="_blank"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="https://twitter.com" target="_blank"><i class="fa-brands fa-twitter"></i></a>
+          <a href="https://google.com" target="_blank"><i class="fa-brands fa-google-plus-g"></i></a>
+          <a href="https://pinterest.com" target="_blank"><i class="fa-brands fa-pinterest-p"></i></a>
+          <a href="https://linkedin.com" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
+        </div>
+      </div>
+      <div class="navigation-big">
+        <div class="navigation-big-logo">
+          <img src="/images/Hospital_logo-removebg.png" alt="" />
+          <span>LIFE SAVER</span>
+        </div>
+
+        <div class="navigation-big-card">
+          <img src="/images/mobile-phone.png" alt="" />
+          <div class="navigation-big-card-2">
+            <span class="card-title">Call us now</span>
+            <span class="card-desc">+1-888-987-6543</span>
+          </div>
+        </div>
+        <div class="navigation-big-card">
+          <img src="/images/pin.png" alt="" />
+          <div class="navigation-big-card-2">
+            <span class="card-title">Basvangudi</span>
+            <span class="card-desc">BMS Hospital 560004</span>
+          </div>
+        </div>
+        <div class="navigation-big-card">
+          <img src="/images/schedule.png" alt="" />
+          <div class="navigation-big-card-2">
+            <span class="card-title">Mon - Satday</span>
+            <span class="card-desc">09.00am to 18.00pm</span>
+          </div>
+        </div>
+        <div class="navigation-big-search">
+          <img src="/images/loupe.png" alt="" />
+        </div>
+      </div>
+      <div class="navigation-small">
+        <div class="navigation-small-anchors">
+          <div><a href="/" class="active" style="text-decoration: underline">HOME</a></div>
+
+          <% if(user) { %>
+            <div><a href="/logout">LOG OUT</a></div>
+            <% }else{ %>
+
+
+              <div class="dropdown">
+                <a href="#">LOGIN</a>
+                <div class="dropdown-content">
+                  <a href="/doctor/login">Doctor</a>
+                  <a href="/patient/login">Patient</a>
+                </div>
+              </div>
+              <% } %>
+
+                <div><a href="/aboutus">ABOUT US</a></div>
+                <div><a href="#departments">DEPARTMENTS</a></div>
+                <div><a href="#map">LOCATION</a></div>
+                <div><a href="/contactus">CONTACT US</a></div>
+
+                <% if(user) { %>
+                  <div><a href="/profile">PROFILE</a></div>
+                  <% } %>
+
+        </div>
+
+        <div class="navigation-small-consult">
+          <a href="#appointment">FOR CONSULTATION</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <div class="header">
+      <div class="header-info">
+        <div class="info-title">Providing total healthcare solutions</div>
+        <div class="info-desc">
+          Denouncing pleasure and praising pain and we will give you a
+          complete account of the system
+        </div>
+        <div class="buttons">
+          <button>READ MORE</button>
+          <button style="background-color: var(--blue); color: white">
+            DEPARTMENTS
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="appointment" id="makeApp">
+      <div class="app-left">
+        <img src="/images/schedule2.png" alt="" style="filter: invert(100%)" />
+        <span>Make an appointment</span>
+      </div>
+      <form action="/appointment" class="app-form" id="appointment">
+        <div class="inputs">
+          <input type="text" placeholder="Your name" name="name" />
+        </div>
+        <div class="inputs">
+          <select name="department" id="department">
+            <option value="Select Department">Select Department</option>
+            <option value="Cardiology">Cardiology</option>
+            <option value="Pulmonology">Pulmonology</option>
+            <option value="Gynecology">Gynecology</option>
+            <option value="Neurology">Neurology</option>
+            <option value="Urology">Urology</option>
+            <option value="Pediatrician">Pediatrician</option>
+            <option value="Gastrologer">Gastrologer</option>
+          </select>
+        </div>
+        <div class="inputs">
+          <select name="doctor" id="doctor">
+            <option value="">Select Doctor</option>
+            <option value="1">Madhurika Priya</option>
+            <option value="2">Priyanshi Surana</option>
+            <option value="3">Bhoomika Hegde</option>
+            <option value="4">Sakshi Kallur</option>
+          </select>
+        </div>
+        <div class="inputs">
+          <input type="date" placeholder="Select Date" style="color: rgb(128, 128, 128)" name="date" />
+        </div>
+
+        <%if(!user){ %>
+        <a class="app-right" style="width: 100%; color: white; cursor: pointer;" href="/patient/login">
+          <span style="margin-right: 6px;">LOGIN</span>
+        </a>
+        <%}else{ %>
+        <a class="app-right" style="width: 100%; color: white; cursor: pointer;" href="#"
+          onclick="submitForm(); return false;">
+          <span style="margin-right: 6px;">SUBMIT</span>
+          <img src="/images/send.png" alt="" />
+        </a>
+        <%}%>
+      </form>
+
+    </div>
+  </main>
+
+  <section>
+    <div class="departments" id="departments">
+      <div class="departments-card">
+        <img src="/images/heart.png" alt="" />
+        <div class="departments-title">Cardiology</div>
+        <div class="departments-desc">
+          Heart health experts providing comprehensive care for a strong and
+          healthy cardiovascular system.
+        </div>
+        <button class="departments-read-more">READ MORE</button>
+      </div>
+      <div class="departments-card">
+        <img src="/images/pulmonology.png" alt="" />
+        <div class="departments-title">Pulmonology</div>
+        <div class="departments-desc">
+          Respiratory specialists ensuring optimal lung function and promoting
+          respiratory wellness.
+        </div>
+        <button class="departments-read-more">READ MORE</button>
+      </div>
+      <div class="departments-card">
+        <img src="/images/uterus.png" alt="" />
+        <div class="departments-title">Gynecology</div>
+        <div class="departments-desc">
+          Women's health advocates offering compassionate and personalized
+          care for reproductive well-being.
+        </div>
+        <button class="departments-read-more">READ MORE</button>
+      </div>
+      <div class="departments-card">
+        <img src="/images/neurology.png" alt="" />
+        <div class="departments-title">Neurology</div>
+        <div class="departments-desc">
+          Brain and nervous system specialists dedicated to diagnosing and
+          treating neurological conditions with expertise and empathy.
+        </div>
+        <button class="departments-read-more">READ MORE</button>
+      </div>
+      <div class="departments-card">
+        <img src="/images/urology.png" alt="" />
+        <div class="departments-title">Urology</div>
+        <div class="departments-desc">
+          Experts in urinary and reproductive health, committed to enhancing
+          urological well-being for all..
+        </div>
+        <button class="departments-read-more">READ MORE</button>
+      </div>
+      <div class="departments-card">
+        <img src="/images/doctor.png" alt="" />
+        <div class="departments-title">Pediatrician</div>
+        <div class="departments-desc">
+          Caring for the youngest members of your family with expertise and
+          compassion, ensuring a healthy start to life.
+        </div>
+        <button class="departments-read-more">READ MORE</button>
+      </div>
+      <div class="departments-card">
+        <img src="/images/laboratory.png" alt="" />
+        <div class="departments-title">Laboratory</div>
+        <div class="departments-desc">
+          Cutting-edge diagnostic services delivering accurate and timely
+          results for informed healthcare decisions.
+        </div>
+        <button class="departments-read-more">READ MORE</button>
+      </div>
+      <div class="departments-card">
+        <img src="/images/doctor (1).png" alt="" />
+        <div class="departments-title">Gastrologer</div>
+        <div class="departments-desc">
+          Digestive health specialists offering advanced care and solutions
+          for a healthy gastrointestinal system.
+        </div>
+        <button class="departments-read-more">READ MORE</button>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="services-info">
+      <img src="/images/doctor.jpg" alt="" />
+      <div class="services-info-right">
+        <div class="services-head">Our Best Services</div>
+        <div class="services-desc">
+          <div class="serices-info-card">
+            <div class="services-info-card-title">Laboratory Analysis</div>
+            <div class="services-info-card-desc">
+              Explain to you how all this mistaken idea of denouncing pleasure
+              and praising pain was born and I will give you a complete
+              account of the system, and the master-builder of human
+              happiness. Expound the actual teachings of the great explorer of
+              the truth.
+            </div>
+            <button class="departments-read-more">READ MORE</button>
+          </div>
+          <img src="/images/service-big-2.jpg" alt="" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="background-color: var(--blue)">
+    <div class="achievements">
+      <div class="ach-head">Keep Your Headup & Be Patient</div>
+      <div class="ach-desc">
+        How all this mistaken idea of denouncing pleasure and praising pain
+        was born and I will give you a complete account of the system and
+        expound the actual teachings of the great.
+      </div>
+      <div class="ach-bottom">
+        <div class="ach-cards">
+          <img src="/images/band-aid.png" alt="" />
+          <div class="ach-cards-head">25</div>
+          <div class="ach-cards-desc">Years Of Experience</div>
+        </div>
+        <div class="ach-cards">
+          <img src="/images/happiness.png" alt="" />
+          <div class="ach-cards-head">50,000+</div>
+          <div class="ach-cards-desc">Well Smiley Faces</div>
+        </div>
+        <div class="ach-cards">
+          <img src="/images/heartbeat.png" alt="" />
+          <div class="ach-cards-head">2000+</div>
+          <div class="ach-cards-desc">Heart Transplant</div>
+        </div>
+        <div class="ach-cards">
+          <img src="/images/award.png" alt="" />
+          <div class="ach-cards-head">350+</div>
+          <div class="ach-cards-desc">Awards Holded</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-about">
+      <h2 style="margin-bottom: 1rem">About Hospitals</h2>
+      <p>
+        The relentless service of Hospitals in the past 25 years has taken
+        health care to the most modern levels in the region, catering to urban
+        & rural.
+      </p>
+      <p>
+        A Health Care Provider of Western Approach, Hospitals is the most
+        trusted multispecialty hospital.
+      </p>
+      <a href="#">KNOW MORE</a>
+    </div>
+
+    <div class="footer-links">
+      <h2 style="margin-bottom: 1rem">Useful Links</h2>
+      <ul>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Awards</a></li>
+        <li><a href="#">Consultants</a></li>
+        <li><a href="#">Working Hours</a></li>
+        <li><a href="#">Procedures</a></li>
+        <li><a href="#">Special Offers</a></li>
+        <li><a href="#">FAQ’s</a></li>
+        <li><a href="#">Services</a></li>
+        <li><a href="#">Healthy Foods</a></li>
+        <li><a href="#">Appointments</a></li>
+        <li><a href="#">Latest News</a></li>
+        <li><a href="#">Certificates</a></li>
+        <li><a href="#">Qualifications</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-contact">
+      <h2 style="margin-bottom: 1rem">Contact Details</h2>
+      <p>Basvangudi 560004 BMS Hospital</p>
+      <p>Email: bmscehospital@gmail.com</p>
+      <p>Phone: (123) 0200 12345 & 7890</p>
+      <p>Working Hours: Mon-Satday: 9am to 18pm</p>
+    </div>
+
+    <div class="footer-appointment">
+      <h2 style="margin-bottom: 1rem">Make An Appointment</h2>
+      <form action="#">
+        <input type="text" placeholder="Your Name" />
+        <input type="email" placeholder="Your Email" />
+        <textarea placeholder="Your Message"></textarea>
+        <button type="submit">SUBMIT</button>
+      </form>
+    </div>
+
+    <a href="https://www.google.com/maps/place/BMS+Hospital/@12.9411386,77.5649215,17z/data=!3m1!4b1!4m6!3m5!1s0x3bae158b5de77713:0x5b3a6891156b90ae!8m2!3d12.9411334!4d77.5674964!16s%2Fg%2F1tgllbjp?entry=ttu"
+      target="_blank">
+      <img id="map" src="/images/Screenshot 2024-02-01 233404.png" alt="Hospital map">
+    </a>
+</body>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // Get reference to the buttons
+    var readMoreButton = document.querySelector('button:nth-of-type(1)');
+    var departmentsButton = document.querySelector('button:nth-of-type(2)');
+
+    // Add click event listener for the Read More button
+    readMoreButton.addEventListener("click", function () {
+      window.location.href = "/aboutus"; // Redirect to "/aboutus" when clicked
+    });
+
+    // Add click event listener for the Departments button
+    departmentsButton.addEventListener("click", function () {
+      window.location.href = "#departments"; // Redirect to "#departments" when clicked
+    });
+  });
+
+
+  // Function to handle form submission
+  function submitForm() {
+    // Get form data
+    const name = document.querySelector('input[name="name"]').value;
+    const department = document.querySelector('select[name="department"]').value;
+    const doctorId = document.querySelector('select[name="doctor"]').value; // Get selected doctor ID
+    const date = document.querySelector('input[name="date"]').value;
+
+    // Create an object to hold the form data
+    const formData = {
+      name: name,
+      department: department,
+      doctorid: doctorId,
+      date: date
+    };
+
+    // Send form data to the backend
+    fetch('/appointment/create', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData)
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log('Appointment booked successfully:', data.message);
+        window.location.href = '/profile';
+        // Optionally, you can redirect the user to a confirmation page or display a success message
+      })
+      .catch(error => {
+        console.error('There was a problem with your fetch operation:', error);
+        // Optionally, you can display an error message to the user
+      });
+  }
+
+
+</script>
+
+</html>
