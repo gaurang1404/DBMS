@@ -8,38 +8,53 @@ export default class PatientController{
         this.patientRepository = new PatientRepository();
     }
 
+    getLogin(req, res){
+        res.render('patientLogin.ejs', {errorMessage: null});
+    }
+
+    getSignup(req, res){
+        res.render('patientAppForm.ejs');
+    }
+
     async signUp(req, res, next){
         try{
-            const {firstName, middleName, lastName, email, password, dateOfBirth, gender, contactNumber, address} = req.body;
-            const user = new PatientModel(firstName, middleName, lastName, email, password, dateOfBirth, gender, contactNumber, address);
+            const {firstName, lastName, dob, gender, phone, email, password, address, medicalHistory} = req.body;
+            
+            const user = {
+                firstName,
+                lastName,
+                dob,
+                gender,
+                phone,
+                email,
+                password,
+                address,
+                medicalHistory
+            }
+     
             const returnUser = await this.patientRepository.signUp(user);
-            return res.status(201).send(returnUser);
+            return res.render('PatientLogin.ejs', {errorMessage: null});
+
         }catch(err){
             if(err instanceof ValidationError){
                 return res.status(err.code).send(err.array);
             }
-            if(err instanceof mongoose.Error.ValidationError){
-                return res.status(500).send(err.message);
-            }
-            next(err);
+            console.log(err);
+            return res.status(500).send("Something went wrong");
         }        
     }
 
     async logIn(req, res){
         try{
             const {email, password} = req.body;
-            const user = await this.patientRepository.logIn(email, password);
-            if(!user){
-                return res.status(401).send("Incorrect credentials, please check your email and password");
-            }
+            const user = await this.patientRepository.logIn(email, password);            
             req.session.user = user;
-            return res.status(200).send(user);
+            req.session.role = "patient";
+            return res.render("index.ejs", {
+              user: req.session.user,
+            });
         }catch(err){
-            if(err instanceof mongoose.Error.ValidationError){
-                next(err);
-            }
             res.status(500).send("Something went wrong, please try again later");
         }
     }
-
 }
