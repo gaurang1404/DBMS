@@ -1,3 +1,15 @@
+Create a MySql schema for 
+
+users(user_id int pk, first_name varchar, last_name varcharm email varchar, password varchar, user_type enum['Patient', 'Doctor'])
+
+patients(patient_id int fk, dob date, gender enum['Male', 'Female'], address varchar, phone_number char, medical_history varchar)
+
+doctors(doctor_id int fk, department enum['Cardiology', 'Pulmonology', 'Gynecology', 'Neurology', 'Urology', 'Pediatrician', 'Laboratory', 'Gastrologer'] years_of_experience int, gender enum['Male', 'Female'], available_from time, available_to time)
+
+appointments(appointment_id int pk, patient_id int fk, doctor_id int fk, appointment_date date, appointment_time time, status enum['Completed', 'Scheduled'])
+
+medicalrecords(record_id int pk, patient_id int fk, doctor_id int fk, appointment_id int fk, diagnosis varchar, treatment varchar, prescription varchar)
+
 Creating tables
 
 CREATE TABLE Users (

@@ -13,6 +13,10 @@ patientRouter.get('/signup', (req, res) => {
     patientController.getSignup(req, res);
 })
 
+patientRouter.get('/profile', (req, res) => {
+    patientController.getProfile(req, res);
+})
+
 patientRouter.post('/signup', (req, res, next) => {
     patientController.signUp(req, res, next);
 })

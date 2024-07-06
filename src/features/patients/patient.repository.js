@@ -86,23 +86,46 @@ export default class PatientRepository{
 
     async logIn(email, password) {
         try {
-            const query = `SELECT * FROM users WHERE email = ? AND password = ?`;
-            const results = await new Promise((resolve, reject) => {
-                this.connection.query(query, [email, password], (err, results) => {
+            const query1 = `SELECT * FROM users WHERE email = ? AND password = ?`;
+            const query2 = `SELECT * FROM patients WHERE patient_id = ?`;
+            const results1 = await new Promise((resolve, reject) => {
+                this.connection.query(query1, [email, password], (err, results) => {
                     if (err) {
                         return reject(err);
                     }
                     resolve(results);
                 });
             });
-    
-            // Check if a user was found
-            if (results.length === 0) {
+
+            if (results1.length === 0) {
                 throw new ApplicationError(401, "Invalid email or password");
             }
     
-            // Return the user
-            return results[0];
+            const results2 = await new Promise((resolve, reject) => {
+                this.connection.query(query2, [results1[0].user_id], (err, results) => {
+                    if (err) {
+                        return reject(err);
+                    }
+                    resolve(results);
+                });
+            });
+
+            console.log(results1[0]);
+            console.log(results2[0]);
+
+            const user = {
+                firstName: results1[0].first_name,
+                lastName: results1[0].last_name,
+                dob: results2[0].dob,
+                gender: results2[0].gender,
+                phone: results2[0].phone_number,
+                email: results1[0].email,
+                password: results1[0].password,
+                address: results2[0].address,
+                medicalHistory: results2[0].medical_history
+            }
+            console.log(user);
+            return user;
         } catch (err) {
             console.log(err);
             throw new ApplicationError(500, "Something went wrong with the database");

@@ -16,6 +16,13 @@ export default class PatientController{
         res.render('patientAppForm.ejs');
     }
 
+    getProfile(req, res){
+        res.render('patientProfile.ejs', {
+            user: req.session.user,
+            appointments: req.session.appointments
+        });
+    }
+
     async signUp(req, res, next){
         try{
             const {firstName, lastName, dob, gender, phone, email, password, address, medicalHistory} = req.body;
@@ -32,7 +39,7 @@ export default class PatientController{
                 medicalHistory
             }
      
-            const returnUser = await this.patientRepository.signUp(user);
+            await this.patientRepository.signUp(user);
             return res.render('PatientLogin.ejs', {errorMessage: null});
 
         }catch(err){
