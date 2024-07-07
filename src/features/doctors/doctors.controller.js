@@ -1,52 +1,65 @@
-import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv';
-
-dotenv.config();
-
-import ApplicationError from "../../error-handler/applicationError.js";
-import ValidationError from "../../error-handler/validationError.js";
-import DoctorModel from "./doctors.model.js";
 import DoctorRepository from "./doctors.repository.js";
+import ValidationError from "../../error-handler/validationError.js";
 
 export default class DoctorController{
+
     constructor(){
         this.doctorRepository = new DoctorRepository();
     }
 
+    getLogin(req, res){
+        res.render('doctorLogin.ejs', {errorMessage: null});
+    }
+
+    getSignup(req, res){
+        res.render('doctorRegistrationForm.ejs', {errorMessage: null});
+    }
+
+    getProfile(req, res){
+        res.render('doctorProfile.ejs', {
+            user: req.session.user,
+            appointments: req.session.appointments
+        });
+    }
+
     async signUp(req, res, next){
         try{
-            const {firstName, middleName, lastName, email, password, gender, contactNumber} = req.body;
-            const user = new DoctorModel(firstName, middleName, lastName, email, password, gender, contactNumber);
-            const newUser = await this.doctorRepository.signUp(user);
-            res.status(201).send(newUser);
+            const {firstName, lastName, email, password, department, availableFrom, availableTo, experience} = req.body;
+            
+            const user = {
+                firstName,
+                lastName,
+                email,
+                password,
+                department, 
+                availableFrom,
+                availableTo, 
+                experience
+            }
+     
+            await this.doctorRepository.signUp(user);
+            return res.render('doctorLogin.ejs', {errorMessage: null});
+
         }catch(err){
-            next(err);
-        }
+            if(err instanceof ValidationError){
+                return res.status(err.code).send(err.array);
+            }
+            console.log(err);
+            return res.status(500).send("Something went wrong");
+        }        
     }
 
-    async logIn(req, res, next){
+    async logIn(req, res){
         try{
             const {email, password} = req.body;
-            const user = await this.doctorRepository.logIn(email, password);
-            if(!user){
-                return res.status(401).send("Incorrect credentials, please check your email and password");
-            }
-
-            const token = jwt.sign(
-                {
-                    userID: user._id,
-                    email: user.email   
-                }, 
-                process.env.JWT_SECRET,
-                {
-                    expiresIn: '2h'
-                }              
-            )
-
-            return res.status(200).send(token);
+            const user = await this.doctorRepository.logIn(email, password);            
+            req.session.user = user;
+            req.session.role = "doctor";
+            return res.render("index.ejs", {
+              user: req.session.user,
+            });
         }catch(err){
-            next(err);
+            res.status(500).send("Something went wrong, please try again later");
         }
     }
-
 }

@@ -140,19 +140,20 @@
 
       <div class="upcoming-appointments">
         <h2>Upcoming Appointments</h2>
-
-        <% if (!appointments) { %>
-        <h3>No appointments yet!</h3>
-        <% } else { %> <% appointments.forEach(appointment => { %>
-        <div class="appointment">
-          <h3><%= appointment.department %> Checkup</h3>
-          <p>
-            <strong>Date:</strong> <%= appointment.appointment_date %>
-          </p>
-          <p><strong>Time:</strong> <%= appointment.appointment_time></p>
-        </div>
-        <% })} %>
+      
+        <% if (!appointments || appointments.length === 0) { %>
+          <h3>No appointments yet!</h3>
+        <% } else { %>
+          <% appointments.forEach(appointment => { %>
+            <div class="appointment">
+              <h3><%= appointment.department %> Checkup</h3>
+              <p><strong>Date:</strong> <%= appointment.appointment_date %></p>
+              <p><strong>Time:</strong> <%= appointment.appointment_time %></p>
+            </div>
+          <% }); %>
+        <% } %>
       </div>
+      
     </div>
   </body>
 </html>

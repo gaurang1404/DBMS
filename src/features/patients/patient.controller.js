@@ -1,5 +1,4 @@
 import PatientRepository from "./patient.repository.js";
-import PatientModel from "./patient.model.js";
 import ValidationError from "../../error-handler/validationError.js";
 
 export default class PatientController{
@@ -17,9 +16,9 @@ export default class PatientController{
     }
 
     getProfile(req, res){
-        res.render('patientProfile.ejs', {
+        return res.render("patientProfile.ejs", {
             user: req.session.user,
-            appointments: req.session.appointments
+            appointments: req.session.appointments        
         });
     }
 

@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Doctor Login</title>
+    <title>Patient Login</title>
     <style>
       body {
         font-family: Arial, sans-serif;
@@ -74,17 +74,10 @@
       <h1>Doctor Login</h1>
       <!-- Error Box -->
       <% if(errorMessage) { %>
-      <div class="error-box" id="error-box"></div>
+      <div class="error-box" id="error-box"><%= errorMessage%></div>
       <% } %>
 
-      <form id="login-form" method="post" action="/doctor/login">
-        <input
-          type="text"
-          id="name"
-          name="role"
-          value="doctor"
-          style="display: none"
-        />
+      <form action="/doctor/login" method="POST">
         <label for="email">Email:</label>
         <input type="email" id="email" name="email" required />
 
@@ -92,46 +85,8 @@
         <input type="password" id="password" name="password" required />
 
         <button type="submit">Login</button>
-        <button onclick="location.href='/doctor/register'">
-          Don't have an account? Register
-        </button>
       </form>
+      <p>Don't have an account? <a href="/doctor/signup">Register</a></p>
     </div>
-
-    <!-- <script>
-      document
-        .getElementById("login-form")
-        .addEventListener("submit", async function (event) {
-          event.preventDefault(); // Prevent form submission
-
-          const email = document.getElementById("email").value;
-          const password = document.getElementById("password").value;
-
-          // Send a POST request to the backend API
-          try {
-            const response = await fetch("/doctor/login", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({ email, password }),
-            });
-
-            const data = await response.json();
-            if (response.ok) {
-              // If login successful, redirect to another page or show a success message
-              window.location.href = "/index.cjs";
-            } else {
-              // If login failed, display error message
-              document.getElementById("error-box").textContent =
-                data.error || "Login failed";
-            }
-          } catch (error) {
-            console.error("Error:", error);
-            document.getElementById("error-box").textContent =
-              "An error occurred";
-          }
-        });
-    </script> -->
   </body>
 </html>

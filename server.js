@@ -3,9 +3,8 @@ import express from 'express';
 import session from 'express-session';
 import path from 'path';
 import ejs from 'ejs';
-
-import db from './src/connections/db.js';
 import patientRouter from './src/features/patients/patient.routes.js';
+import doctorRouter from './src/features/doctors/doctors.routes.js';
 
 const server = express();
 
@@ -46,6 +45,7 @@ connection.connect((err) => {
 
 
 server.use('/patient', patientRouter);
+server.use('/doctor', doctorRouter);
 
 server.get('/', (req, res) => {
     res.render('index.ejs', {user: null});
