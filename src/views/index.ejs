@@ -141,7 +141,7 @@
       </div>
       <form action="/appointment" method="post" class="app-form" id="appointment">
         <div class="inputs">
-          <input type="text" placeholder="Your name" name="name" />
+          <input type="text" placeholder= "<%= user?.firstName %>" name="name" readonly />
         </div>
         <div class="inputs">
           <select name="department" id="department">
@@ -391,18 +391,18 @@
     });
   });
 
-  document.getElementById('appointment').addEventListener('submit', function(event) {
-  event.preventDefault();
-  const formData = new FormData(this);
-  fetch('/appointment', {
-    method: 'POST',
-    body: new URLSearchParams(formData)
-  }).then(response => {
-    return response.text();
-  }).then(text => {
-    console.log(text);
-  });
-});
+//   document.getElementById('appointment').addEventListener('submit', function(event) {
+//   event.preventDefault();
+//   const formData = new FormData(this);
+//   fetch('/appointment', {
+//     method: 'POST',
+//     body: new URLSearchParams(formData)
+//   }).then(response => {
+//     return response.text();
+//   }).then(text => {
+//     console.log(text);
+//   });
+// });
 //   document.getElementById('appointment').addEventListener('submit', function(event) {
 //     event.preventDefault();
 //     submitForm();

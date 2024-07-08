@@ -1,3 +1,5 @@
+https://chatgpt.com/share/e25c39f0-d0f7-4481-b2d8-9fc24ee2c375
+
 Create a MySql schema for 
 
 users(user_id int pk, first_name varchar, last_name varcharm email varchar, password varchar, user_type enum['Patient', 'Doctor'])

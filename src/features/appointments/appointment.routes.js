@@ -5,8 +5,8 @@ import AppointmentController from "./appointment.controller.js";
 const appointmentRouter = express.Router();
 const appointmentController = new AppointmentController();
 
-appointmentRouter.post('/', (req, res) => {
-    appointmentController.bookAppointment(req, res);
+appointmentRouter.post('/', (req, res, next) => {
+    appointmentController.bookAppointment(req, res, next);
 })
 
 

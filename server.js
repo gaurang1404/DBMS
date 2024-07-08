@@ -75,6 +75,7 @@ server.use((err, req, res, next) => {
   if (err instanceof ApplicationError) {
     res.status(err.status).send(err.message);
   } else {
+    console.log(err);
     res.status(500).send('Internal Server Error');
   }
 });

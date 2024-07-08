@@ -22,9 +22,27 @@ export default class AppointmentRepository{
           this.connection = connection;
     }
 
-    async getAppointments(id) {
+    async getPatientAppointments(id) {
         try {            
-            const query = `SELECT * FROM appointments WHERE patient_id = ?`;  
+            const query = `SELECT 
+    a.appointment_id,
+    a.patient_id,
+    a.doctor_id,
+    a.appointment_date,
+    a.appointment_time,
+    a.status,
+    u.first_name AS doctor_first_name,
+    u.last_name AS doctor_last_name,
+    d.department
+FROM 
+    appointments a
+JOIN 
+    doctors d ON a.doctor_id = d.doctor_id
+JOIN 
+    users u ON d.doctor_id = u.user_id
+WHERE 
+    a.patient_id = ?
+`;  
 
             // Insert into users table
             const appointments = await new Promise((resolve, reject) => {
@@ -34,8 +52,14 @@ export default class AppointmentRepository{
                     }
                     resolve(results);
                 });
-            });            
-
+            });      
+            appointments.forEach(a => {
+                let dateTimeString = a.appointment_date;
+                let date = new Date(dateTimeString);
+                let formattedDate = date.toISOString().substring(0, 10);
+                a.appointment_date = formattedDate;
+            })
+            return appointments;
         } catch (err) {
             // Rollback the transaction in case of error
             await new Promise((resolve, reject) => {
@@ -48,7 +72,7 @@ export default class AppointmentRepository{
             }
             throw new ApplicationError(500, "Something went wrong with database, try again later");
         } 
-        return appointments;
+        
     }
 
     async bookAppointment(obj){
@@ -74,9 +98,6 @@ export default class AppointmentRepository{
             });
             
         }catch(err){
-            if(err instanceof ValidationError){
-                return res.status(err.code).send(err.array);
-            }
             console.log(err);
             return res.status(500).send("Something went wrong");
         }        

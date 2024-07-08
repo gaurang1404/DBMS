@@ -1,5 +1,8 @@
 import PatientRepository from "./patient.repository.js";
 import ValidationError from "../../error-handler/validationError.js";
+import AppointmentRepository from "../appointments/appointment.repository.js";
+
+const appointmentRepository = new AppointmentRepository();
 
 export default class PatientController{
 
@@ -54,14 +57,17 @@ export default class PatientController{
         try{
             const {email, password} = req.body;
             const user = await this.patientRepository.logIn(email, password);  
-            console.log(user);          
+            console.log(user); 
+            const appointments = await appointmentRepository.getPatientAppointments(user.userId);         
             req.session.user = user;
+            req.session.appointments = appointments;
             req.session.role = "patient";
             return res.render("index.ejs", {
               user: req.session.user,
               doctors: req.session.doctors
             });
         }catch(err){
+            console.log(err);
             res.status(500).send("Something went wrong, please try again later");
         }
     }
