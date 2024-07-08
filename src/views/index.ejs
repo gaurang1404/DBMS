@@ -155,15 +155,16 @@
             <option value="Gastrologer">Gastrologer</option>
           </select>
         </div>
+        
         <div class="inputs">
-          <select name="doctor" id="doctor">
+          <select name="doctor_id" id="doctor">
             <option value="">Select Doctor</option>
-            <option value="1">Madhurika Priya</option>
-            <option value="2">Priyanshi Surana</option>
-            <option value="3">Bhoomika Hegde</option>
-            <option value="4">Sakshi Kallur</option>
+            <% doctors.forEach(doctor => { %>
+            <option value="<%= doctor.doctor_id %>"><%= doctor.first_name %></option>
+            <% }); %>
           </select>
         </div>
+
         <div class="inputs">
           <input type="date" placeholder="Select Date" style="color: rgb(128, 128, 128)" name="date" />
         </div>

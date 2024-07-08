@@ -5,6 +5,9 @@ import path from 'path';
 import ejs from 'ejs';
 import patientRouter from './src/features/patients/patient.routes.js';
 import doctorRouter from './src/features/doctors/doctors.routes.js';
+import ApplicationError from './src/error-handler/applicationError.js';
+
+
 
 const server = express();
 
@@ -46,9 +49,25 @@ connection.connect((err) => {
 
 server.use('/patient', patientRouter);
 server.use('/doctor', doctorRouter);
+server.use('/appointment', appointmentRouter);
 
-server.get('/', (req, res) => {
-    res.render('index.ejs', {user: null});
+server.get('/', async (req, res) => {
+  try {
+    const query = `SELECT user_id, first_name FROM users WHERE user_type = 'Doctor'`;
+    const doctors = await new Promise((resolve, reject) => {
+        connection.query(query, [], (err, results) => {
+            if (err) {
+                return reject(err);
+            }
+            resolve(results);
+        });
+    })
+    req.session.doctors = doctors;
+  }catch (err) {
+    console.log(err);
+    throw new ApplicationError(500, "Something went wrong with the database");
+  }
+  res.render('index.ejs', {user: null, doctors: req.session.doctors});
 })
 
 
