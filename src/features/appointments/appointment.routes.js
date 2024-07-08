@@ -1,28 +1,13 @@
 import express from "express"
 
-import PatientController from "./patient.controller.js"
+import AppointmentController from "./appointment.controller.js";
 
-const patientRouter = express.Router();
-const patientController = new PatientController();
+const appointmentRouter = express.Router();
+const appointmentController = new AppointmentController();
 
-patientRouter.get('/login', (req, res) => {
-    patientController.getLogin(req, res);
+appointmentRouter.post('/', (req, res) => {
+    appointmentController.bookAppointment(req, res);
 })
 
-patientRouter.get('/signup', (req, res) => {
-    patientController.getSignup(req, res);
-})
 
-patientRouter.get('/profile', (req, res) => {
-    patientController.getProfile(req, res);
-})
-
-patientRouter.post('/signup', (req, res, next) => {
-    patientController.signUp(req, res, next);
-})
-
-patientRouter.post('/login', (req, res) => {
-    patientController.logIn(req, res);
-})
-
-export default patientRouter;
+export default appointmentRouter;

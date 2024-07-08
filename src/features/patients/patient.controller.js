@@ -53,11 +53,13 @@ export default class PatientController{
     async logIn(req, res){
         try{
             const {email, password} = req.body;
-            const user = await this.patientRepository.logIn(email, password);            
+            const user = await this.patientRepository.logIn(email, password);  
+            console.log(user);          
             req.session.user = user;
             req.session.role = "patient";
             return res.render("index.ejs", {
               user: req.session.user,
+              doctors: req.session.doctors
             });
         }catch(err){
             res.status(500).send("Something went wrong, please try again later");

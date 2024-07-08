@@ -57,6 +57,7 @@ export default class DoctorController{
             req.session.role = "doctor";
             return res.render("index.ejs", {
               user: req.session.user,
+              doctorsc: req.session.doctors
             });
         }catch(err){
             res.status(500).send("Something went wrong, please try again later");

@@ -1,7 +1,7 @@
 import mysql from 'mysql2';
 import ApplicationError from '../../error-handler/applicationError.js'
 
-export default class PatientRepository{
+export default class AppointmentRepository{
     constructor(){
         const connection = mysql.createConnection({
             host: 'localhost',
@@ -22,51 +22,20 @@ export default class PatientRepository{
           this.connection = connection;
     }
 
-    async signUp(user) {
-        try {
-            
-            const query1 = `INSERT INTO users (password, email, first_name, last_name, user_type) VALUES (?, ?, ?, ?, 'Patient')`;
-            const query2 = `INSERT INTO patients (patient_id, dob, gender, address, phone_number, medical_history) VALUES (LAST_INSERT_ID(), ?, ?, ?, ?, ?)`;
-    
-            // Start a transaction
-            await new Promise((resolve, reject) => {
-                this.connection.beginTransaction(err => {
-                    if (err) {
-                        return reject(err);
-                    }
-                    resolve();
-                });
-            });
-    
+    async getAppointments(id) {
+        try {            
+            const query = `SELECT * FROM appointments WHERE patient_id = ?`;  
+
             // Insert into users table
-            await new Promise((resolve, reject) => {
-                this.connection.query(query1, [user.password, user.email, user.firstName, user.lastName], (err, results) => {
+            const appointments = await new Promise((resolve, reject) => {
+                this.connection.query(query, [id], (err, results) => {
                     if (err) {
                         return reject(err);
                     }
                     resolve(results);
                 });
-            });
-    
-            // Insert into patients table
-            await new Promise((resolve, reject) => {
-                this.connection.query(query2, [user.dob, user.gender, user.address, user.phone, user.medicalHistory], (err, results) => {
-                    if (err) {
-                        return reject(err);
-                    }
-                    resolve(results);
-                });
-            });
-    
-            // Commit the transaction
-            await new Promise((resolve, reject) => {
-                this.connection.commit(err => {
-                    if (err) {
-                        return reject(err);
-                    }
-                    resolve();
-                });
-            });
+            });            
+
         } catch (err) {
             // Rollback the transaction in case of error
             await new Promise((resolve, reject) => {
@@ -79,70 +48,36 @@ export default class PatientRepository{
             }
             throw new ApplicationError(500, "Something went wrong with database, try again later");
         } 
-        return user;
+        return appointments;
     }
-    
-    
 
-    async logIn(email, password) {
-        try {
-            const query1 = `SELECT * FROM users WHERE email = ? AND password = ?`;
-            const query2 = `SELECT * FROM patients WHERE patient_id = ?`;
-            const results1 = await new Promise((resolve, reject) => {
-                this.connection.query(query1, [email, password], (err, results) => {
+    async bookAppointment(obj){
+        const query1 = `SELECT available_from FROM doctors WHERE doctor_id = ?`;
+            const timing = await new Promise((resolve, reject) => {
+                this.connection.query(query1, [obj.doctor_id], (err, results) => {
                     if (err) {
                         return reject(err);
                     }
                     resolve(results);
                 });
             });
+            console.log(timing);
 
-            if (results1.length === 0) {
-                throw new ApplicationError(401, "Invalid email or password");
-            }
-    
-            const results2 = await new Promise((resolve, reject) => {
-                this.connection.query(query2, [results1[0].user_id], (err, results) => {
+            const query2 = `INSERT INTO appointments (patient_id, doctor_id, appointment_date, appointment_time, status) VALUES (?, ?, ?, ?, ?)`;
+            await new Promise((resolve, reject) => {
+                this.connection.query(query2, [obj.patient_id, obj.doctor_id, obj.date, timing[0].available_from, 'Scheduled'], (err, results) => {
                     if (err) {
                         return reject(err);
                     }
                     resolve(results);
                 });
             });
-
-            console.log(results1[0]);
-            console.log(results2[0]);
-
-            const user = {
-                firstName: results1[0].first_name,
-                lastName: results1[0].last_name,
-                dob: results2[0].dob,
-                gender: results2[0].gender,
-                phone: results2[0].phone_number,
-                email: results1[0].email,
-                password: results1[0].password,
-                address: results2[0].address,
-                medicalHistory: results2[0].medical_history
-            }
-            console.log(user);
-            return user;
-        } catch (err) {
-            console.log(err);
-            throw new ApplicationError(500, "Something went wrong with the database");
-        }
-    }
-    
-
-    async findByEmail(email){
-        try{
-            return await UserModel.findOne({email});
+            
         }catch(err){
-            if(err instanceof mongoose.Error.ValidationError){
-                throw err;
+            if(err instanceof ValidationError){
+                return res.status(err.code).send(err.array);
             }
             console.log(err);
-            throw new ApplicationError(500, "Something went wrong with the database");   
-        }
+            return res.status(500).send("Something went wrong");
+        }        
     }
-
-}

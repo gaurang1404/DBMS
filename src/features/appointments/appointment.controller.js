@@ -1,53 +1,19 @@
-import PatientRepository from "./patient.repository.js";
+import AppointmentRepository from "./appointment.repository.js";
 import ValidationError from "../../error-handler/validationError.js";
 
-export default class PatientController{
+export default class AppointmentController{
 
     constructor(){
-        this.patientRepository = new PatientRepository();
+        this.appointmentRepository = new AppointmentRepository();
     }
 
-    getLogin(req, res){
-        res.render('patientLogin.ejs', {errorMessage: null});
-    }
-
-    getSignup(req, res){
-        res.render('patientAppForm.ejs');
-    }
-
-    getProfile(req, res){
-        return res.render("patientProfile.ejs", {
-            user: req.session.user,
-            appointments: req.session.appointments        
-        });
-    }
-
-    async signUp(req, res, next){
-        try{
-            const {firstName, lastName, dob, gender, phone, email, password, address, medicalHistory} = req.body;
+    async bookAppointment(req, res, next){
+            let obj = JSON.stringify(req.body); 
+            obj = JSON.parse(obj);
+            obj.patient_id = req.session.user.userId.toString();
+            console.log(obj);
+            this.appointmentRepository.bookAppointment(obj);
             
-            const user = {
-                firstName,
-                lastName,
-                dob,
-                gender,
-                phone,
-                email,
-                password,
-                address,
-                medicalHistory
-            }
-     
-            await this.patientRepository.signUp(user);
-            return res.render('PatientLogin.ejs', {errorMessage: null});
-
-        }catch(err){
-            if(err instanceof ValidationError){
-                return res.status(err.code).send(err.array);
-            }
-            console.log(err);
-            return res.status(500).send("Something went wrong");
-        }        
     }
 
     async logIn(req, res){

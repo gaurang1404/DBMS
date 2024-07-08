@@ -139,7 +139,7 @@
         <img src="/images/schedule2.png" alt="" style="filter: invert(100%)" />
         <span>Make an appointment</span>
       </div>
-      <form action="/appointment" class="app-form" id="appointment">
+      <form action="/appointment" method="post" class="app-form" id="appointment">
         <div class="inputs">
           <input type="text" placeholder="Your name" name="name" />
         </div>
@@ -155,34 +155,32 @@
             <option value="Gastrologer">Gastrologer</option>
           </select>
         </div>
-        
         <div class="inputs">
           <select name="doctor_id" id="doctor">
             <option value="">Select Doctor</option>
             <% doctors.forEach(doctor => { %>
-            <option value="<%= doctor.doctor_id %>"><%= doctor.first_name %></option>
+            <option value= <%= doctor.user_id %>>
+              <%= doctor.first_name %>
+            </option>
             <% }); %>
           </select>
         </div>
-
         <div class="inputs">
           <input type="date" placeholder="Select Date" style="color: rgb(128, 128, 128)" name="date" />
         </div>
-
-        <%if(!user){ %>
+        <% if (!user) { %>
         <a class="app-right" style="width: 100%; color: white; cursor: pointer;" href="/patient/login">
           <span style="margin-right: 6px;">LOGIN</span>
         </a>
-        <%}else{ %>
-        <a class="app-right" style="width: 100%; color: white; cursor: pointer;" href="#"
-          onclick="submitForm(); return false;">
+        <% } else { %>
+        <button class="app-right" style="width: 100%; color: white; cursor: pointer;" type="submit">
           <span style="margin-right: 6px;">SUBMIT</span>
           <img src="/images/send.png" alt="" />
-        </a>
-        <%}%>
+        </button>
+        <% } %>
       </form>
-
     </div>
+    
   </main>
 
   <section>
@@ -393,47 +391,61 @@
     });
   });
 
+  document.getElementById('appointment').addEventListener('submit', function(event) {
+  event.preventDefault();
+  const formData = new FormData(this);
+  fetch('/appointment', {
+    method: 'POST',
+    body: new URLSearchParams(formData)
+  }).then(response => {
+    return response.text();
+  }).then(text => {
+    console.log(text);
+  });
+});
+//   document.getElementById('appointment').addEventListener('submit', function(event) {
+//     event.preventDefault();
+//     submitForm();
+// });
 
-  // Function to handle form submission
-  function submitForm() {
-    // Get form data
-    const name = document.querySelector('input[name="name"]').value;
-    const department = document.querySelector('select[name="department"]').value;
-    const doctorId = document.querySelector('select[name="doctor"]').value; // Get selected doctor ID
-    const date = document.querySelector('input[name="date"]').value;
+// function submitForm() {
+//     // Get form data
+//     const name = document.querySelector('input[name="name"]').value;
+//     const department = document.querySelector('select[name="department"]').value;
+//     const doctorId = document.querySelector('select[name="doctor_id"]').value; // Get selected doctor ID
+//     const date = document.querySelector('input[name="date"]').value;
 
-    // Create an object to hold the form data
-    const formData = {
-      name: name,
-      department: department,
-      doctorid: doctorId,
-      date: date
-    };
+//     // Create an object to hold the form data
+//     const formData = {
+//         name: name,
+//         department: department,
+//         doctorid: doctorId,
+//         date: date
+//     };
 
-    // Send form data to the backend
-    fetch('/appointment/create', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(formData)
-    })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      })
-      .then(data => {
-        console.log('Appointment booked successfully:', data.message);
-        window.location.href = '/profile';
-        // Optionally, you can redirect the user to a confirmation page or display a success message
-      })
-      .catch(error => {
-        console.error('There was a problem with your fetch operation:', error);
-        // Optionally, you can display an error message to the user
-      });
-  }
+//     // Send form data to the backend
+//     fetch('/appointment/create', {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json'
+//         },
+//         body: JSON.stringify(formData)
+//     })
+//     .then(response => {
+//         if (!response.ok) {
+//             throw new Error('Network response was not ok');
+//         }
+//         return response.json();
+//     })
+//     .then(data => {
+//         console.log('Appointment booked successfully:', data.message);
+//         window.location.href = '/profile';
+//     })
+//     .catch(error => {
+//         console.error('There was a problem with your fetch operation:', error);
+//     });
+// }
+
 
 
 </script>

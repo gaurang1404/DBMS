@@ -114,6 +114,7 @@ export default class DoctorRepository{
             // console.log(results2[0]);
 
             const user = {
+                userId: results1[0].user_id,
                 firstName: results1[0].first_name,
                 lastName: results1[0].last_name,
                 email: results1[0].email,

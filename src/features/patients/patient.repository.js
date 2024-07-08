@@ -110,10 +110,8 @@ export default class PatientRepository{
                 });
             });
 
-            console.log(results1[0]);
-            console.log(results2[0]);
-
             const user = {
+                userId: results1[0].user_id,
                 firstName: results1[0].first_name,
                 lastName: results1[0].last_name,
                 dob: results2[0].dob,
