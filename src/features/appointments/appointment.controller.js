@@ -21,9 +21,10 @@ export default class AppointmentController {
             console.error("Error booking appointment:", err);
             next(err); // Pass the error to the next middleware
         }
+        
         return res.render("patientProfile.ejs", {
             user: req.session.user,
-            appointments: null        
+            appointments: req.session.appointments        
         });
     }
 

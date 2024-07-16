@@ -70,6 +70,16 @@ server.get('/', async (req, res) => {
   }
 });
 
+server.get("/logout", (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.redirect("/");
+    }
+  });
+});
+
 // Error handling middleware
 server.use((err, req, res, next) => {
   if (err instanceof ApplicationError) {
@@ -79,6 +89,8 @@ server.use((err, req, res, next) => {
     res.status(500).send('Internal Server Error');
   }
 });
+
+
 
 server.listen(3000, () => {
   console.log("Server is running");

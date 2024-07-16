@@ -1,10 +1,11 @@
 import DoctorRepository from "./doctors.repository.js";
 import ValidationError from "../../error-handler/validationError.js";
-
+import AppointmentRepository from "../appointments/appointment.repository.js";
 export default class DoctorController{
 
     constructor(){
         this.doctorRepository = new DoctorRepository();
+        this.appointmentRepository = new AppointmentRepository();
     }
 
     getLogin(req, res){
@@ -15,10 +16,12 @@ export default class DoctorController{
         res.render('doctorRegistrationForm.ejs', {errorMessage: null});
     }
 
-    getProfile(req, res){
-        res.render('doctorProfile.ejs', {
+    async getProfile(req, res){
+        const appointments = await this.appointmentRepository.getDoctorAppointments(req.session.user.userId);
+        console.log(appointments);
+        return res.render('doctorProfile.ejs', {
             user: req.session.user,
-            appointments: req.session.appointments
+            appointments: appointments
         });
     }
 
@@ -55,9 +58,11 @@ export default class DoctorController{
             const user = await this.doctorRepository.logIn(email, password);            
             req.session.user = user;
             req.session.role = "doctor";
+            req.session.doctors = await this.doctorRepository.getAll();
+            console
             return res.render("index.ejs", {
               user: req.session.user,
-              doctorsc: req.session.doctors
+              doctors: req.session.doctors
             });
         }catch(err){
             res.status(500).send("Something went wrong, please try again later");

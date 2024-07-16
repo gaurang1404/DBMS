@@ -19,9 +19,10 @@ export default class PatientController{
     }
 
     getProfile(req, res){
+        const appointments = appointmentRepository.getAll();
         return res.render("patientProfile.ejs", {
             user: req.session.user,
-            appointments: req.session.appointments        
+            appointments: appointments        
         });
     }
 

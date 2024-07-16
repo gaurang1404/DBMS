@@ -145,4 +145,17 @@ export default class DoctorRepository{
         }
     }
 
+    async getAll(){
+        const query1 = `SELECT * FROM doctors`;
+        const doctors = await new Promise((resolve, reject) => {
+            this.connection.query(query1, [], (err, results) => {
+                if (err) {
+                    return reject(err);
+                }
+                resolve(results);
+            });
+        });
+        return doctors;
+    }
+
 }

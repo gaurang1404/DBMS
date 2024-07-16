@@ -142,22 +142,21 @@
 
       <div class="upcoming-appointments">
         <h2>Upcoming Appointments</h2>
-
+      
         <% if (!appointments || appointments.length === 0) { %>
           <h3>No appointments yet!</h3>
         <% } else { %>
-        <% appointments.forEach((appointment) => { %>
-        <div class="appointment">
-          <h3>Appointment: <%= appointment.department %> Checkup</h3>
-          <p><strong>Patient:</strong> <%= appointment.name %></p>
-          <p>
-            <strong>Date:</strong> <%= new Date(appointment.date).getDate() %>
-            <%= new Date(appointment.date).toLocaleString('default', { month:
-            'long' }) %> <%= new Date(appointment.date).getFullYear() %>
-          </p>
-          <p><strong>Time:</strong> 10:00am</p>
-        </div>
-        <% })} %>
+          <% appointments.forEach(appointment => { %>
+            <div class="appointment">
+              <h3><%= appointment.department %> Checkup</h3>
+              <p><strong>Patient: </strong> &nbsp;<%= appointment.patient_first_name %>
+               <%= appointment.patient_last_name %></p>
+              <p><strong>Date:</strong> <%= appointment.appointment_date %></p>
+              <p><strong>Time:</strong> <%= appointment.appointment_time %></p>
+            </div>
+          <% }); %>
+        <% } %>
+
       </div>
     </div>
   </body>

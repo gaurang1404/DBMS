@@ -100,6 +100,8 @@ export default class PatientRepository{
             if (results1.length === 0) {
                 throw new ApplicationError(401, "Invalid email or password");
             }
+
+            console.log(results1[0]);
     
             const results2 = await new Promise((resolve, reject) => {
                 this.connection.query(query2, [results1[0].user_id], (err, results) => {
@@ -109,6 +111,8 @@ export default class PatientRepository{
                     resolve(results);
                 });
             });
+
+            console.log(results2[0]);
 
             const user = {
                 userId: results1[0].user_id,

@@ -75,8 +75,63 @@ WHERE
         
     }
 
+    async getDoctorAppointments(id) {
+        try {            
+            const query = `SELECT 
+    a.appointment_id,
+    a.patient_id,
+    a.doctor_id,
+    a.appointment_date,
+    a.appointment_time,
+    a.status,
+    u.first_name AS patient_first_name,
+    u.last_name AS patient_last_name,
+    d.department
+FROM 
+    appointments a
+JOIN 
+    doctors d ON a.doctor_id = d.doctor_id
+JOIN 
+    patients p ON a.patient_id = p.patient_id
+JOIN 
+    users u ON p.patient_id = u.user_id
+WHERE 
+    a.doctor_id = ?
+`;  
+
+            // Insert into users table
+            const appointments = await new Promise((resolve, reject) => {
+                this.connection.query(query, [id], (err, results) => {
+                    if (err) {
+                        return reject(err);
+                    }
+                    resolve(results);
+                });
+            });      
+            appointments.forEach(a => {
+                let dateTimeString = a.appointment_date;
+                let date = new Date(dateTimeString);
+                let formattedDate = date.toISOString().substring(0, 10);
+                a.appointment_date = formattedDate;
+            })
+            return appointments;
+        } catch (err) {
+            // Rollback the transaction in case of error
+            await new Promise((resolve, reject) => {
+                this.connection.rollback(() => {
+                    reject(err);
+                });
+            });
+            if (err instanceof ApplicationError) {
+                throw err;
+            }
+            throw new ApplicationError(500, "Something went wrong with database, try again later");
+        } 
+        
+    }
+
     async bookAppointment(obj){
-        const query1 = `SELECT available_from FROM doctors WHERE doctor_id = ?`;
+            const query1 = `SELECT available_from FROM doctors WHERE doctor_id = ?`;
             const timing = await new Promise((resolve, reject) => {
                 this.connection.query(query1, [obj.doctor_id], (err, results) => {
                     if (err) {
@@ -100,5 +155,19 @@ WHERE
         }catch(err){
             console.log(err);
             return res.status(500).send("Something went wrong");
-        }        
+        }  
+
+        async getAll(){
+            const query1 = `SELECT * FROM appointments`;
+            const appointments = await new Promise((resolve, reject) => {
+                this.connection.query(query1, [], (err, results) => {
+                    if (err) {
+                        return reject(err);
+                    }
+                    resolve(results);
+                });
+            });
+            return appointments;
+        }
     }
+
