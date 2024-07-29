@@ -25,4 +25,8 @@ patientRouter.post('/login', (req, res) => {
     patientController.logIn(req, res);
 })
 
+patientRouter.get('/getrecords/:appointment_id', (req, res) => {
+    patientController.getRecords(req, res);
+})
+
 export default patientRouter;

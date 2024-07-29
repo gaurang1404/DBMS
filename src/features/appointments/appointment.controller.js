@@ -22,24 +22,21 @@ export default class AppointmentController {
             next(err); // Pass the error to the next middleware
         }
         
-        return res.render("patientProfile.ejs", {
-            user: req.session.user,
-            appointments: req.session.appointments        
-        });
+        res.redirect("/patient/profile");
     }
 
-    async logIn(req, res) {
-        try {
-            const { email, password } = req.body;
-            const user = await this.patientRepository.logIn(email, password);
-            req.session.user = user;
-            req.session.role = "patient";
-            return res.render("index.ejs", {
-                user: req.session.user,
-            });
-        } catch (err) {
-            console.error("Error logging in:", err);
-            res.status(500).send("Something went wrong, please try again later");
-        }
-    }
+    // async logIn(req, res) {
+    //     try {
+    //         const { email, password } = req.body;
+    //         const user = await this.patientRepository.logIn(email, password);
+    //         req.session.user = user;
+    //         req.session.role = "patient";
+    //         return res.render("index.ejs", {
+    //             user: req.session.user,
+    //         });
+    //     } catch (err) {
+    //         console.error("Error logging in:", err);
+    //         res.status(500).send("Something went wrong, please try again later");
+    //     }
+    // }
 }

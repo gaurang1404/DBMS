@@ -1,6 +1,7 @@
 import PatientRepository from "./patient.repository.js";
 import ValidationError from "../../error-handler/validationError.js";
 import AppointmentRepository from "../appointments/appointment.repository.js";
+import PatientRecords from "../records/recordsRepository.js";
 
 const appointmentRepository = new AppointmentRepository();
 
@@ -8,6 +9,7 @@ export default class PatientController{
 
     constructor(){
         this.patientRepository = new PatientRepository();
+        this.patientRecords = new PatientRecords();
     }
 
     getLogin(req, res){
@@ -18,8 +20,8 @@ export default class PatientController{
         res.render('patientAppForm.ejs');
     }
 
-    getProfile(req, res){
-        const appointments = appointmentRepository.getAll();
+    async getProfile(req, res){
+        const appointments = await appointmentRepository.getPatientAppointments(req.session.user.userId);
         return res.render("patientProfile.ejs", {
             user: req.session.user,
             appointments: appointments        
@@ -71,5 +73,23 @@ export default class PatientController{
             console.log(err);
             res.status(500).send("Something went wrong, please try again later");
         }
+    }
+
+    async getRecords(req, res){
+        try{
+            const appointment_id = req.params.appointment_id;
+            const appointment = await appointmentRepository.getOneAppointment(appointment_id);
+            const getRecords = await this.patientRecords.getRecords(appointment_id);
+            console.log(appointment);
+            console.log(getRecords);
+            return res.render("patientRecords.ejs", {
+              user: req.session.user,
+              appointment: appointment[0],
+              records: getRecords[0]
+            });
+        }catch(err){
+            console.log(err);
+            res.status(500).send("Something went wrong, please try again later");
+        }    
     }
 }

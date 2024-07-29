@@ -59,6 +59,7 @@ WHERE
                 let formattedDate = date.toISOString().substring(0, 10);
                 a.appointment_date = formattedDate;
             })
+            console.log(appointments);
             return appointments;
         } catch (err) {
             // Rollback the transaction in case of error
@@ -169,5 +170,23 @@ WHERE
             });
             return appointments;
         }
-    }
+
+        async getOneAppointment(id){
+            const query = `SELECT * FROM appointments WHERE appointment_id = ?`;
+            const appointment = await new Promise((resolve, reject) => {
+                this.connection.query(query, [id], (err, results) => {
+                    if (err) {
+                        return reject(err);
+                    }
+                    resolve(results);
+                });
+            });
+            let dateTimeString = appointment[0].appointment_date;
+                let date = new Date(dateTimeString);
+                let formattedDate = date.toISOString().substring(0, 10);
+                appointment[0].appointment_date = formattedDate;
+            return appointment;
+        }
+
+}
 

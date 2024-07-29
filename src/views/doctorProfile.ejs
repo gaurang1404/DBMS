@@ -129,10 +129,8 @@
           <img src="/images/girlp.jpg" alt="Profile Picture" />
         </div>
         <div class="profile-details">
-          <p><label>Name:</label> <%= user.name %></p>
+          <p><label>Name:</label> <%= user.firstName %></p>
           <p><label>Email:</label> <%= user.email %></p>
-          <p><label>Phone:</label> <%= user.phone %></p>
-          <p><label>Gender:</label> <%= user.gender %></p>
           <p><label>Department:</label> <%= user.department %></p>
         </div>
       </div>
@@ -148,7 +146,7 @@
         <% } else { %>
           <% appointments.forEach(appointment => { %>
             <div class="appointment">
-              <h3><%= appointment.department %> Checkup</h3>
+              <h3>Checkup</h3>
               <p><strong>Patient: </strong> &nbsp;<%= appointment.patient_first_name %>
                <%= appointment.patient_last_name %></p>
               <p><strong>Date:</strong> <%= appointment.appointment_date %></p>
